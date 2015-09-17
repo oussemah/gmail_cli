@@ -126,6 +126,11 @@ def main():
 	"""Checks gmail for executions requests,
 	   executes them and returns status in a screenshot.
 	"""
+	locked=os.path.isfile('/tmp/gmail_cli.lock')
+	if locked :
+		return
+	fp = open('/tmp/gmail_cli.lock', 'w')
+	
 	credentials = get_credentials()
 	http = credentials.authorize(httplib2.Http())
 	service = discovery.build('gmail', 'v1', http=http)
@@ -146,6 +151,8 @@ def main():
 		SenMessage(service, 'me', message_raw)
 		#Trash the message
 		service.users().messages().trash(userId='me', id=message['id']).execute()
+	fp.close()
+	os.system('rm /tmp/gmail_cli.lock')
 
 if __name__ == '__main__':
     main()
