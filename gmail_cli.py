@@ -48,7 +48,7 @@ def get_credentials():
     credentials = store.get()
     if not credentials or credentials.invalid:
         flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
-        flow.user_agent = "EmailCommand"
+        flow.user_agent = "GmailCLI"
         if flags:
             credentials = tools.run_flow(flow, store, flags)
         else: # Needed only for compatability with Python 2.6
